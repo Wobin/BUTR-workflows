@@ -17,6 +17,10 @@ on:
       artifact_name:
         required: true
         type: string
+    secrets:
+      GITHUB_TOKEN:
+        description: 'A token passed from the caller workflow'
+        required: true
 
 jobs:
   publish-on-github:
