@@ -1,0 +1,93 @@
+name: Release Module on GitHub
+
+on:
+  workflow_call:
+    inputs:
+      mod_id:
+        required: true
+        type: string
+      mod_version:
+        required: false
+        type: string
+        default: ''
+      mod_description:
+        required: false
+        type: string
+        default: ''
+      artifact_name:
+        required: true
+        type: string
+
+jobs:
+  publish-on-github:
+    name: Publish Module on GitHub
+    runs-on: ubuntu-latest
+    steps:
+    
+    - uses: ./setup-common.yml@master
+      secrets:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Download Module artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: ${{ inputs.artifact_name }}
+        path: ./artifact
+
+    - name: 7z Module
+      run: 7z a -t7z ${{ inputs.mod_id }}.7z ./artifact/* -mx9
+      #shell: pwsh
+      # pwsh casues it to include the root folder
+
+    - name: Install Bannerlord.ChangelogParser
+      if: ${{ inputs.mod_version == '' || inputs.mod_description == '' }}
+      run: dotnet tool install -g Bannerlord.ChangelogParser;
+      shell: pwsh
+
+    - name: Set Version
+      if: ${{ inputs.mod_version == '' }}
+      id: changelog
+      run: |
+        vers="$(bannerlord_changelog_parser latestversion -f "$PWD/changelog.txt")"
+        echo "::set-output name=mod_version::$vers"   
+    - name: Set Version
+      if: ${{ inputs.mod_version != '' }}
+      id: changelog
+      run: echo "::set-output name=mod_version::${{ inputs.mod_version }}"
+        
+    - name: Set Description
+      if: ${{ inputs.mod_description == '' }}
+      id: changelog
+      run: |
+        desc="$(bannerlord_changelog_parser fulldescription -f "$PWD/changelog.txt")"
+        desc="${desc//'%'/'%25'}"
+        desc="${desc//$'\n'/'%0A'}"
+        desc="${desc//$'\r'/'%0D'}"
+        echo "::set-output name=mod_description::$desc"
+    - name: Set Description
+      if: ${{ inputs.mod_description != '' }}
+      id: changelog
+      run: echo "::set-output name=mod_description::${{ inputs.mod_description }}"
+
+    - name: Create Release
+      uses: actions/create-release@v1
+      id: create_release
+      with:
+        tag_name: v${{ inputs.mod_version }}
+        release_name: Release ${{ inputs.mod_version }}
+        body: ${{ inputs.mod_description }}
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{steps.create_release.outputs.upload_url}}
+        asset_path: ./${{ inputs.mod_id }}.7z
+        asset_name: ${{ inputs.mod_id }}.7z
+        asset_content_type: application/x-7z-compressed
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
