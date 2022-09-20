@@ -1,0 +1,41 @@
+name: Common Setup
+
+on:
+  workflow_call:
+    inputs:
+      github-token:
+        required: true
+        type: string
+      fetch-depth:
+        required: false
+        type: number
+        default: 1
+
+jobs:
+  setup-common:
+    name: Common Setup
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+        fetch-depth: ${{inputs.fetch-depth}}
+        
+    - name: Setup .NET 6
+      uses: actions/setup-dotnet@master
+      with:
+        dotnet-version: 6.x.x
+
+    - name: Ensure NuGet Source
+      uses: fabriciomurta/ensure-nuget-source@v1
+      with:
+        name: 'nuget.org'
+        url: 'https://api.nuget.org/v3/index.json'
+
+    - name: Setup BUTR GPR
+      uses: actions/setup-dotnet@master
+      with:
+        source-url: https://nuget.pkg.github.com/BUTR/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{inputs.github-token}}
