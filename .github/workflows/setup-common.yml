@@ -7,10 +7,6 @@ on:
         required: false
         type: number
         default: 1
-    secrets:
-      GITHUB_TOKEN:
-        description: 'A token passed from the caller workflow'
-        required: true
 
 jobs:
   setup-common:
