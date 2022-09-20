@@ -24,8 +24,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     
-    - uses: ./.github/workflows/setup-common.yml@master
-
+    - name: Setup
+      uses: butr/actions-common-setup@v2.0
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+    
     - name: Download Module artifact
       uses: actions/download-artifact@v3
       with:
