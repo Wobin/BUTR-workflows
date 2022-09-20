@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     
-    - uses: ./setup-common.yml@master
+    - uses: ./.github/workflows/setup-common.yml@master
       secrets:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
