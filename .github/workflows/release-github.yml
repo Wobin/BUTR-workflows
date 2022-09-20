@@ -17,10 +17,6 @@ on:
       artifact_name:
         required: true
         type: string
-    secrets:
-      GITHUB_TOKEN:
-        description: 'A token passed from the caller workflow'
-        required: true
 
 jobs:
   publish-on-github:
@@ -29,8 +25,7 @@ jobs:
     steps:
     
     - uses: ./.github/workflows/setup-common.yml@master
-      secrets:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      secrets: inherit
 
     - name: Download Module artifact
       uses: actions/download-artifact@v3
