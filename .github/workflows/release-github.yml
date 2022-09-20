@@ -44,36 +44,38 @@ jobs:
 
     - name: Set Version
       if: ${{ inputs.mod_version == '' }}
-      id: changelog
-      run: |
-        vers="$(bannerlord_changelog_parser latestversion -f "$PWD/changelog.txt")"
-        echo "::set-output name=mod_version::$vers"   
-    - name: Set Version
-      if: ${{ inputs.mod_version != '' }}
-      id: changelog
-      run: echo "::set-output name=mod_version::${{ inputs.mod_version }}"
-        
+      id: set_version
+      run: >-
+        if ($${{ inputs.mod_version == '' }}) {
+          vers="$(bannerlord_changelog_parser latestversion -f "$PWD/changelog.txt")"
+          echo "::set-output name=mod_version::$vers"   
+        }
+        if (!$${{ inputs.mod_version == '' }}) {
+          echo "::set-output name=mod_version::${{ inputs.mod_version }}"
+        }
+
     - name: Set Description
       if: ${{ inputs.mod_description == '' }}
-      id: changelog
-      run: |
-        desc="$(bannerlord_changelog_parser fulldescription -f "$PWD/changelog.txt")"
-        desc="${desc//'%'/'%25'}"
-        desc="${desc//$'\n'/'%0A'}"
-        desc="${desc//$'\r'/'%0D'}"
-        echo "::set-output name=mod_description::$desc"
-    - name: Set Description
-      if: ${{ inputs.mod_description != '' }}
-      id: changelog
-      run: echo "::set-output name=mod_description::${{ inputs.mod_description }}"
+      id: set_description
+      run: >-
+        if ($${{ inputs.mod_description == '' }}) {
+          desc="$(bannerlord_changelog_parser fulldescription -f "$PWD/changelog.txt")"
+          desc="${desc//'%'/'%25'}"
+          desc="${desc//$'\n'/'%0A'}"
+          desc="${desc//$'\r'/'%0D'}"
+          echo "::set-output name=mod_description::$desc"
+        }
+        if (!$${{ inputs.mod_description == '' }}) {
+          echo "::set-output name=mod_description::${{ inputs.mod_description }}"
+        }
 
     - name: Create Release
       uses: actions/create-release@v1
       id: create_release
       with:
-        tag_name: v${{ inputs.mod_version }}
-        release_name: Release ${{ inputs.mod_version }}
-        body: ${{ inputs.mod_description }}
+        tag_name: v${{ set_version.mod_version }}
+        release_name: Release ${{ set_version.mod_version }}
+        body: ${{ set_description.mod_description }}
         draft: false
         prerelease: false
       env:
