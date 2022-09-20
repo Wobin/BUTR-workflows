@@ -25,7 +25,6 @@ jobs:
     steps:
     
     - uses: ./.github/workflows/setup-common.yml@master
-      secrets: inherit
 
     - name: Download Module artifact
       uses: actions/download-artifact@v3
