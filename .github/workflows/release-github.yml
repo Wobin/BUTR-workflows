@@ -48,7 +48,7 @@ jobs:
     - name: Set Version
       if: ${{ inputs.mod_version == '' }}
       id: set_version
-      run: >-
+      run: |
         if ${{ inputs.mod_version == '' }}
         then
           vers="$(bannerlord_changelog_parser latestversion -f "$PWD/changelog.txt")"
@@ -60,7 +60,7 @@ jobs:
     - name: Set Description
       if: ${{ inputs.mod_description == '' }}
       id: set_description
-      run: >-
+      run: |
         if ${{ inputs.mod_description == '' }}
         then
           desc="$(bannerlord_changelog_parser fulldescription -f "$PWD/changelog.txt")"
