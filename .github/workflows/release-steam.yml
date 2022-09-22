@@ -28,10 +28,6 @@ jobs:
         name: ${{ inputs.artifact_name }}
         path: ./artifact
 
-    - uses: actions/setup-node@v3.4.1
-      with:
-        node-version: 16
-
     - run: |
         mkdir steam-totp
         cat << EOT > steam-totp/package.json
@@ -46,10 +42,48 @@ jobs:
         }
         
     - run: |
+        cat << EOT > steam-totp/package-lock.json
+        {
+          "name": "steam-totp-gen",
+          "version": "1.0.0",
+          "lockfileVersion": 2,
+          "requires": true,
+          "packages": {
+            "": {
+              "name": "steam-totp-gen",
+              "version": "1.0.0",
+              "license": "ISC",
+              "dependencies": {
+                "steam-totp": "^2.1.2"
+              }
+            },
+            "node_modules/steam-totp": {
+              "version": "2.1.2",
+              "resolved": "https://registry.npmjs.org/steam-totp/-/steam-totp-2.1.2.tgz",
+              "integrity": "sha512-bTKlc/NoIUQId+my+O556s55DDsNNXfVIPWFDNVu68beql7AJhV0c+GTjFxfwCDYfdc4NkAme+0WrDdnY2D2VA==",
+              "engines": {
+                "node": ">=6.0.0"
+              }
+            }
+          },
+          "dependencies": {
+            "steam-totp": {
+              "version": "2.1.2",
+              "resolved": "https://registry.npmjs.org/steam-totp/-/steam-totp-2.1.2.tgz",
+              "integrity": "sha512-bTKlc/NoIUQId+my+O556s55DDsNNXfVIPWFDNVu68beql7AJhV0c+GTjFxfwCDYfdc4NkAme+0WrDdnY2D2VA=="
+            }
+          }
+        }
+        
+    - run: |
         cat << EOT > steam-totp/index.js
         var code = require('steam-totp').generateAuthCode(process.argv[0]);
         console.log(`::add-mask::${code}`);
         console.log(`::set-output name=totp::${code}`);
+        
+    - uses: actions/setup-node@v3.4.1
+      with:
+        node-version: 16
 
     - run: cd ./steam-totp && npm ci && node ./src/index.js {{ secrets.STEAM_AUTH_CODE }}
 
