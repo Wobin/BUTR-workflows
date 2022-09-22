@@ -30,6 +30,7 @@ jobs:
 
     - run: |
         mkdir steam-totp
+        mkdir steam-totp/src
         cat << EOT > steam-totp/package.json
         {
           "name": "steam-totp-gen",
@@ -76,7 +77,7 @@ jobs:
         }
         
     - run: |
-        cat << EOT > steam-totp/index.js
+        cat << EOT > steam-totp/src/index.js
         var code = require('steam-totp').generateAuthCode(process.argv[0]);
         console.log(`::add-mask::${code}`);
         console.log(`::set-output name=totp::${code}`);
