@@ -3,13 +3,6 @@ name: Release Module on Steam
 on:
   workflow_call:
     inputs:
-      mod_id:
-        required: true
-        type: string
-      mod_version:
-        required: false
-        type: string
-        default: ''
       mod_description:
         required: false
         type: string
