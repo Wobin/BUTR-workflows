@@ -89,7 +89,7 @@ jobs:
     - run: cd ./steam-totp && npm ci
     - name: Set TOTP
       id: steam
-      run: cd ./steam-totp && npm ci && node ./src/index.js {{ secrets.STEAM_AUTH_CODE }}
+      run: node ./steam-totp/src/index.js {{ secrets.STEAM_AUTH_CODE }}
 
     - uses: CyberAndrii/setup-steamcmd@v1
 
@@ -104,4 +104,4 @@ jobs:
         }
         EOT
 
-    - run: steamcmd +login ${{ secrets.STEAM_LOGIN }} ${{ secrets.STEAM_PASSWORD }} ${{ steps.steam.totp }} +workshop_build_item "./item.vdf" +quit
+    - run: steamcmd +login "${{ secrets.STEAM_LOGIN }}" "${{ secrets.STEAM_PASSWORD }}" "${{ steps.steam.totp }}" +workshop_build_item "./item.vdf" +quit
