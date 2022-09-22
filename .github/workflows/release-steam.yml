@@ -1,0 +1,54 @@
+name: Release Module on Steam
+
+on:
+  workflow_call:
+    inputs:
+      mod_id:
+        required: true
+        type: string
+      mod_version:
+        required: false
+        type: string
+        default: ''
+      mod_description:
+        required: false
+        type: string
+        default: ''
+      artifact_name:
+        required: true
+        type: string
+
+jobs:
+  publish-on-steam:
+    name: Publish Module on Steam
+    runs-on: ubuntu-latest
+    steps:
+    
+    - name: Setup
+      uses: butr/actions-common-setup@v2.0
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Download Module artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: ${{ inputs.artifact_name }}
+        path: ./artifact
+
+    - uses: actions/setup-node@v3.4.1
+      with:
+        node-version: 16
+        cache: 'npm'
+        cache-dependency-path: steam-totp/package-lock.json
+
+    - run: cd ./steam-totp && npm ci && node .\src\index.js {{ secrets.STEAM_AUTH_CODE }}
+
+    - uses: AnarkisGaming/workshop@v1
+      with:
+        appID: 261550
+        publishedFileID: 2859188632
+        path: ./artifact
+        changelog: ${{ steps.version.outputs.mod_description }}
+      env:
+        STEAM_ACCOUNT_NAME: ${{ secrets.STEAM_LOGIN }}
+        STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD }}
