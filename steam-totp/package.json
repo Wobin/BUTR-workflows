@@ -1,0 +1,9 @@
+{
+  "name": "steam-totp-gen",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "steam-totp": "^2.1.2"
+  }
+}
