@@ -31,8 +31,8 @@ jobs:
     - uses: actions/setup-node@v3.4.1
       with:
         node-version: 16
-        cache: 'npm'
-        cache-dependency-path: steam-totp/package-lock.json
+        #cache: 'npm'
+        #cache-dependency-path: steam-totp/package-lock.json
 
     - run: cd ./steam-totp && npm ci && node .\src\index.js {{ secrets.STEAM_AUTH_CODE }}
 
