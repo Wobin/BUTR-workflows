@@ -96,8 +96,8 @@ jobs:
       id: steam
       run: |
         code=$(node steam-totp/src/index.js ${{ secrets.STEAM_AUTH_CODE }})
-        echo '::add-mask::$code'
-        echo '::set-output name=totp::$code'
+        echo "::add-mask::$code"
+        echo "::set-output name=totp::$code"
 
     - uses: CyberAndrii/setup-steamcmd@v1
 
