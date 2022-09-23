@@ -10,6 +10,13 @@ on:
       artifact_name:
         required: true
         type: string
+    secrets:
+      STEAM_LOGIN:
+        required: true
+      STEAM_AUTH_CODE:
+        required: true
+      STEAM_PASSWORD:
+        required: true
 
 jobs:
   publish-on-steam:
