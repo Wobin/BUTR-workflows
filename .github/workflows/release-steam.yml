@@ -92,12 +92,6 @@ jobs:
         node-version: 16
 
     - run: cd ./steam-totp && npm ci
-    - name: Set TOTP
-      id: steam
-      run: |
-        code=$(node steam-totp/src/index.js ${{ secrets.STEAM_AUTH_CODE }})
-        echo "::add-mask::$code"
-        echo "::set-output name=totp::$code"
 
     - uses: CyberAndrii/setup-steamcmd@v1
 
@@ -112,4 +106,7 @@ jobs:
         }
         EOT
 
-    - run: steamcmd +login "${{ secrets.STEAM_LOGIN }}" "${{ secrets.STEAM_PASSWORD }}" "${{ steps.steam.totp }}" +workshop_build_item "./item.vdf" +quit
+    - run: |
+        code=$(node steam-totp/src/index.js ${{ secrets.STEAM_AUTH_CODE }})
+        echo "::add-mask::$code"
+        steamcmd +login "${{ secrets.STEAM_LOGIN }}" "${{ secrets.STEAM_PASSWORD }}" "$code" +workshop_build_item "./item.vdf" +quit
