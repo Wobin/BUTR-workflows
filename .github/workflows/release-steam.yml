@@ -48,6 +48,7 @@ jobs:
             "steam-totp": "^2.1.2"
           }
         }
+        EOT
         
     - run: |
         cat << EOT > steam-totp/package-lock.json
@@ -82,10 +83,12 @@ jobs:
             }
           }
         }
+        EOT
         
     - run: |
         cat << EOT > steam-totp/src/index.js
         console.log(require('steam-totp').generateAuthCode(process.argv[2]));
+        EOT
         
     - uses: actions/setup-node@v3.4.1
       with:
