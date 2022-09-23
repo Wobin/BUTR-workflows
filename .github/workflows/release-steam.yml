@@ -85,7 +85,7 @@ jobs:
         
     - run: |
         cat << EOT > steam-totp/src/index.js
-        console.log(require('steam-totp').generateAuthCode(process.argv[0]));
+        console.log(require('steam-totp').generateAuthCode(process.argv[2]));
         
     - uses: actions/setup-node@v3.4.1
       with:
@@ -95,7 +95,7 @@ jobs:
     - name: Set TOTP
       id: steam
       run: |
-        code=$(node ./steam-totp/src/index.js ${{ secrets.STEAM_AUTH_CODE }})
+        code=$(node steam-totp/src/index.js ${{ secrets.STEAM_AUTH_CODE }})
         echo '::add-mask::$code'
         echo '::set-output name=totp::$code'
 
@@ -108,7 +108,7 @@ jobs:
             "appid" "261550"
             "publishedfileid" "2859188632"
             "contentfolder" "./artifact"
-            "changenote" "${{ steps.version.outputs.mod_description }}"
+            "changenote" "${{ inputs.mod_description }}"
         }
         EOT
 
