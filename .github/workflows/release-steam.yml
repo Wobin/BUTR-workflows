@@ -107,6 +107,7 @@ jobs:
         EOT
 
     - run: |
-        code=$(node steam-totp/src/index.js ${{ secrets.STEAM_AUTH_CODE }})
-        echo "::add-mask::$code"
-        steamcmd +login "${{ secrets.STEAM_LOGIN }}" "${{ secrets.STEAM_PASSWORD }}" "$code" +workshop_build_item "./item.vdf" +quit
+        $code=$(node steam-totp/src/index.js ${{ secrets.STEAM_AUTH_CODE }});
+        echo "::add-mask::$code";
+        steamcmd +login "${{ secrets.STEAM_LOGIN }}" "${{ secrets.STEAM_PASSWORD }}" "$code" +workshop_build_item "./item.vdf" +quit;
+      shell: pwsh
