@@ -3,6 +3,10 @@ name: Release Module on Steam
 on:
   workflow_call:
     inputs:
+      workshop_id:
+        required: true
+        type: number
+        default: ''
       mod_description:
         required: false
         type: string
@@ -118,7 +122,7 @@ jobs:
         "workshopitem"
         {
             "appid" "261550"
-            "publishedfileid" "2859188632"
+            "publishedfileid" "${{ inputs.workshop_id }}"
             "contentfolder" "$GITHUB_WORKSPACE/artifact"
             "changenote" "${{ inputs.mod_description }}"
         }
