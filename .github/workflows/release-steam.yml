@@ -101,7 +101,7 @@ jobs:
         {
             "appid" "261550"
             "publishedfileid" "2859188632"
-            "contentfolder" "./artifact"
+            "contentfolder" "$GITHUB_WORKSPACE/artifact"
             "changenote" "${{ inputs.mod_description }}"
         }
         EOT
@@ -109,5 +109,5 @@ jobs:
     - run: |
         $code=$(node steam-totp/src/index.js ${{ secrets.STEAM_AUTH_CODE }});
         echo "::add-mask::$code";
-        steamcmd +login "${{ secrets.STEAM_LOGIN }}" "${{ secrets.STEAM_PASSWORD }}" "$code" +workshop_build_item "./item.vdf" +quit;
+        steamcmd +login "${{ secrets.STEAM_LOGIN }}" "${{ secrets.STEAM_PASSWORD }}" "$code" +workshop_build_item "$PWD/item.vdf" +quit;
       shell: pwsh
