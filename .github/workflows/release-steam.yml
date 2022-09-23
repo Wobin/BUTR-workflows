@@ -85,10 +85,7 @@ jobs:
         
     - run: |
         cat << EOT > steam-totp/src/index.js
-        var code = require('steam-totp').generateAuthCode(process.argv[0]);
-        console.log(code);
-        console.log(`::add-mask::${code}`);
-        console.log(`::set-output name=totp::${code}`);
+        console.log(require('steam-totp').generateAuthCode(process.argv[0]));
         
     - uses: actions/setup-node@v3.4.1
       with:
@@ -98,9 +95,9 @@ jobs:
     - name: Set TOTP
       id: steam
       run: |
-        $code="$(node ./steam-totp/src/index.js {{ secrets.STEAM_AUTH_CODE }})"
-        echo "::add-mask::$code"
-        echo "::set-output name=totp::$code"
+        $code="$(node ./steam-totp/src/index.js {{ secrets.STEAM_AUTH_CODE }})";
+        echo "::add-mask::$code";
+        echo "::set-output name=totp::$code";
       shell: pwsh
 
     - uses: CyberAndrii/setup-steamcmd@v1
