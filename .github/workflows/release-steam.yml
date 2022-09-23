@@ -10,13 +10,6 @@ on:
       artifact_name:
         required: true
         type: string
-    secrets:
-      STEAM_LOGIN:
-        required: true
-      STEAM_AUTH_CODE:
-        required: true
-      STEAM_PASSWORD:
-        required: true
 
 jobs:
   publish-on-steam:
@@ -98,9 +91,10 @@ jobs:
     - name: Set TOTP
       id: steam
       run: |
-        code="$(node ./steam-totp/src/index.js {{ secrets.STEAM_AUTH_CODE }})"
+        $code="$(node ./steam-totp/src/index.js {{ secrets.STEAM_AUTH_CODE }})"
         echo "::add-mask::$code"
         echo "::set-output name=totp::$code"
+      shell: pwsh
 
     - uses: CyberAndrii/setup-steamcmd@v1
 
