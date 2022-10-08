@@ -91,4 +91,4 @@ jobs:
         asset_name: ${{ inputs.mod_id }}.7z
         asset_content_type: application/x-7z-compressed
       env:
-        GITHUB_TOKEN: ${ {secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
