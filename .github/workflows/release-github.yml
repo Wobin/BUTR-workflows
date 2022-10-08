@@ -74,7 +74,7 @@ jobs:
       uses: actions/create-release@v1
       id: create_release
       with:
-        tag_name: v${{ steps.set_version.mod_version }}
+        tag_name: v${{ steps.set_version.outputs.mod_version }}
         release_name: Release ${{ steps.set_version.outputs.mod_version }}
         body: ${{ steps.set_description.outputs.mod_description }}
         draft: false
