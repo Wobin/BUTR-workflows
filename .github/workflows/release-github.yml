@@ -46,7 +46,6 @@ jobs:
       shell: pwsh
 
     - name: Set Version
-      if: ${{ inputs.mod_version == '' }}
       id: set_version
       run: |
         if ${{ inputs.mod_version == '' }}
@@ -58,7 +57,6 @@ jobs:
         fi
 
     - name: Set Description
-      if: ${{ inputs.mod_description == '' }}
       id: set_description
       run: |
         if ${{ inputs.mod_description == '' }}
@@ -77,8 +75,8 @@ jobs:
       id: create_release
       with:
         tag_name: v${{ steps.set_version.mod_version }}
-        release_name: Release ${{ steps.set_version.mod_version }}
-        body: ${{ steps.set_description.mod_description }}
+        release_name: Release ${{ steps.set_version.outputs.mod_version }}
+        body: ${{ steps.set_description.outputs.mod_description }}
         draft: false
         prerelease: false
       env:
