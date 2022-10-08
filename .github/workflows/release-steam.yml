@@ -6,7 +6,7 @@ on:
       workshop_id:
         required: true
         type: number
-        default: ''
+        default: -1
       mod_description:
         required: false
         type: string
