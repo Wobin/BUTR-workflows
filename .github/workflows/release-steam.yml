@@ -39,6 +39,11 @@ jobs:
         name: ${{ inputs.artifact_name }}
         path: ./artifact
 
+    - name: Install Bannerlord.ChangelogParser
+      if: ${{ inputs.mod_description == '' }}
+      run: dotnet tool install -g Bannerlord.ChangelogParser;
+      shell: pwsh
+
     - name: Set Description
       if: ${{ inputs.mod_description == '' }}
       id: set_description
