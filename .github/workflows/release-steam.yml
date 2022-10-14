@@ -128,7 +128,7 @@ jobs:
         {
             "appid" "261550"
             "publishedfileid" "${{ inputs.workshop_id }}"
-            "contentfolder" "$GITHUB_WORKSPACE/artifact"
+            "contentfolder" "$GITHUB_WORKSPACE/artifact/Modules"
             "changenote" "${{ inputs.mod_description }}"
         }
         EOT
