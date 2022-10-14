@@ -7,6 +7,9 @@ on:
         required: true
         type: number
         default: -1
+      mod_id:
+        required: true
+        type: string
       mod_description:
         required: false
         type: string
@@ -128,7 +131,7 @@ jobs:
         {
             "appid" "261550"
             "publishedfileid" "${{ inputs.workshop_id }}"
-            "contentfolder" "$GITHUB_WORKSPACE/artifact/Modules"
+            "contentfolder" "$GITHUB_WORKSPACE/artifact/Modules/${{ inputs.mod_id }}"
             "changenote" "${{ inputs.mod_description }}"
         }
         EOT
