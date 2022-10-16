@@ -67,7 +67,11 @@ jobs:
           desc="${desc//$'\r'/'%0D'}"
           echo "::set-output name=mod_description::$desc"
         else
-          echo "::set-output name=mod_description::${{ inputs.mod_description }}"
+          desc="${{ inputs.mod_description }}"
+          desc="${desc//'%'/'%25'}"
+          desc="${desc//$'\n'/'%0A'}"
+          desc="${desc//$'\r'/'%0D'}"
+          echo "::set-output name=mod_description::$desc"
         fi
 
     - name: Create Release
