@@ -48,7 +48,6 @@ jobs:
       shell: pwsh
 
     - name: Set Description
-      if: ${{ inputs.mod_description == '' }}
       id: set_description
       run: |
         if ${{ inputs.mod_description == '' }}
@@ -59,7 +58,11 @@ jobs:
           desc="${desc//$'\r'/'%0D'}"
           echo "::set-output name=mod_description::$desc"
         else
-          echo "::set-output name=mod_description::${{ inputs.mod_description }}"
+          desc="${{ inputs.mod_description }}"
+          desc="${desc//'%'/'%25'}"
+          desc="${desc//$'\n'/'%0A'}"
+          desc="${desc//$'\r'/'%0D'}"
+          echo "::set-output name=mod_description::$desc"
         fi
 
     - run: |
@@ -132,7 +135,7 @@ jobs:
             "appid" "261550"
             "publishedfileid" "${{ inputs.workshop_id }}"
             "contentfolder" "$GITHUB_WORKSPACE/artifact/Modules/${{ inputs.mod_id }}"
-            "changenote" "${{ inputs.mod_description }}"
+            "changenote" "${{ steps.set_description.outputs.mod_description }}"
         }
         EOT
 
