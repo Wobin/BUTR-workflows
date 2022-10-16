@@ -65,82 +65,12 @@ jobs:
           echo "::set-output name=mod_description::$desc"
         fi
 
-    - run: |
-        mkdir steam-totp
-        mkdir steam-totp/src
-        cat << EOT > steam-totp/package.json
-        {
-          "name": "steam-totp-gen",
-          "version": "1.0.0",
-          "description": "",
-          "main": "index.js",
-          "dependencies": {
-            "steam-totp": "^2.1.2"
-          }
-        }
-        EOT
-        
-    - run: |
-        cat << EOT > steam-totp/package-lock.json
-        {
-          "name": "steam-totp-gen",
-          "version": "1.0.0",
-          "lockfileVersion": 2,
-          "requires": true,
-          "packages": {
-            "": {
-              "name": "steam-totp-gen",
-              "version": "1.0.0",
-              "license": "ISC",
-              "dependencies": {
-                "steam-totp": "^2.1.2"
-              }
-            },
-            "node_modules/steam-totp": {
-              "version": "2.1.2",
-              "resolved": "https://registry.npmjs.org/steam-totp/-/steam-totp-2.1.2.tgz",
-              "integrity": "sha512-bTKlc/NoIUQId+my+O556s55DDsNNXfVIPWFDNVu68beql7AJhV0c+GTjFxfwCDYfdc4NkAme+0WrDdnY2D2VA==",
-              "engines": {
-                "node": ">=6.0.0"
-              }
-            }
-          },
-          "dependencies": {
-            "steam-totp": {
-              "version": "2.1.2",
-              "resolved": "https://registry.npmjs.org/steam-totp/-/steam-totp-2.1.2.tgz",
-              "integrity": "sha512-bTKlc/NoIUQId+my+O556s55DDsNNXfVIPWFDNVu68beql7AJhV0c+GTjFxfwCDYfdc4NkAme+0WrDdnY2D2VA=="
-            }
-          }
-        }
-        EOT
-        
-    - run: |
-        cat << EOT > steam-totp/src/index.js
-        console.log(require('steam-totp').generateAuthCode(process.argv[2]));
-        EOT
-        
-    - uses: actions/setup-node@v3.4.1
-      with:
-        node-version: 16
-
-    - run: cd ./steam-totp && npm ci
-
     - uses: CyberAndrii/setup-steamcmd@v1
 
-    - run: |
-        cat << EOT > item.vdf
-        "workshopitem"
-        {
-            "appid" "261550"
-            "publishedfileid" "${{ inputs.workshop_id }}"
-            "contentfolder" "$GITHUB_WORKSPACE/artifact/Modules/${{ inputs.mod_id }}"
-            "changenote" "${{ steps.set_description.outputs.mod_description }}"
-        }
-        EOT
+    - name: Install Bannerlord.SteamWorkshop
+      run: dotnet tool install -g Bannerlord.SteamWorkshop;
+      shell: pwsh
 
     - run: |
-        $code=$(node steam-totp/src/index.js ${{ secrets.STEAM_AUTH_CODE }});
-        echo "::add-mask::$code";
-        steamcmd +login "${{ secrets.STEAM_LOGIN }}" "${{ secrets.STEAM_PASSWORD }}" "$code" +workshop_build_item "$PWD/item.vdf" +quit;
+        bannerlord_steam_workshop loginandpublish -l "${{ secrets.STEAM_LOGIN }}" -p "${{ secrets.STEAM_PASSWORD }}" -t ${{ secrets.STEAM_AUTH_CODE }} -f "${{ inputs.workshop_id }}" -c "$GITHUB_WORKSPACE/artifact/Modules/${{ inputs.mod_id }}" -d "${{ steps.set_description.outputs.mod_description }}";
       shell: pwsh
