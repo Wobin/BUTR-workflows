@@ -29,6 +29,9 @@ jobs:
   publish-on-steam:
     name: Publish Module on Steam
     runs-on: ubuntu-latest
+    environment:
+      name: Steam Workshop
+      url: https://steamcommunity.com/sharedfiles/filedetails/?id=${{ inputs.workshop_id }}
     steps:
     
     - name: Setup
