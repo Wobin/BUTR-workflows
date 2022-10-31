@@ -22,6 +22,9 @@ jobs:
   publish-on-github:
     name: Publish Module on GitHub
     runs-on: ubuntu-latest
+    environment:
+      name: GitHub Release
+      url: ${{ steps.create_release.outputs.upload_url }}
     steps:
     
     - name: Setup
