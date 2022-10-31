@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: GitHub Release
-      url: ${{ steps.create_release.outputs.upload_url }}
+      url: ${{ steps.upload_release_asset.outputs.browser_download_url }}
     steps:
     
     - name: Setup
@@ -90,7 +90,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Upload Release Asset
-      id: upload-release-asset
+      id: upload_release_asset
       uses: actions/upload-release-asset@v1
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
