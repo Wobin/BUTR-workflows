@@ -94,12 +94,13 @@ jobs:
       shell: pwsh
 
     - run: |
-        unex upload ${{ inputs.nexusmods_mod_id }} "${{ inputs.mod_filename }}.7z" -v "v${{ steps.set_version.outputs.mod_version }}";
+        unex upload ${{ inputs.nexusmods_mod_id }} "${{ inputs.mod_filename }}.7z" -v "v${{ steps.set_version.outputs.mod_version }}" ;
       env:
         UNEX_GAME: ${{ inputs.nexusmods_game_id }}
         UNEX_MODID: ${{ inputs.nexusmods_mod_id }}
         UNEX_FILENAME: ${{ inputs.mod_filename }}
         UNEX_FILEDESCRIPTION: ${{ steps.set_description.outputs.mod_description }}
+        UNEX_PREVIOUSFILE: auto
         UNEX_APIKEY: ${{ secrets.NEXUSMODS_APIKEY }}
         UNEX_COOKIES: ${{ secrets.NEXUSMODS_COOKIES }}
       shell: pwsh
