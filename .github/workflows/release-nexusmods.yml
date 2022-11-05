@@ -104,4 +104,5 @@ jobs:
         UNEX_PREVIOUSFILE: auto
         UNEX_APIKEY: ${{ secrets.NEXUSMODS_APIKEY }}
         UNEX_COOKIES: ${{ secrets.NEXUSMODS_COOKIES }}
+        UNEX_DEBUG: true
       shell: pwsh
