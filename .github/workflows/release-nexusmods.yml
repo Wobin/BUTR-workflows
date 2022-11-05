@@ -95,6 +95,7 @@ jobs:
 
     - run: |
         unex upload ${{ inputs.nexusmods_mod_id }} "${{ inputs.mod_filename }}.7z" -v "v${{ steps.set_version.outputs.mod_version }}" ;
+        unex changelog "v${{ steps.set_version.outputs.mod_version }}" "${{ steps.set_description.outputs.mod_description }}"
       env:
         UNEX_GAME: ${{ inputs.nexusmods_game_id }}
         UNEX_MODID: ${{ inputs.nexusmods_mod_id }}
