@@ -81,12 +81,18 @@ jobs:
           desc="${desc//$'\n'/'%0A'}"
           desc="${desc//$'\r'/'%0D'}"
           echo "::set-output name=mod_description::$desc"
+          c_desc="${desc#'For'*'%0A* '}"
+          c_desc="${c_desc//'%0A* '/'%0A'}"
+          echo "::set-output name=mod_changelog::$c_desc"
         else
           desc="${{ inputs.mod_description }}"
           desc="${desc//'%'/'%25'}"
           desc="${desc//$'\n'/'%0A'}"
           desc="${desc//$'\r'/'%0D'}"
           echo "::set-output name=mod_description::$desc"
+          c_desc="${desc#'For'*'%0A* '}"
+          c_desc="${c_desc//'%0A* '/'%0A'}"
+          echo "::set-output name=mod_changelog::$c_desc"          
         fi
 
     - name: Install NexusUploader
@@ -95,7 +101,7 @@ jobs:
 
     - run: |
         unex upload ${{ inputs.nexusmods_mod_id }} "${{ inputs.mod_filename }}.7z" -v "v${{ steps.set_version.outputs.mod_version }}" ;
-        unex changelog "v${{ steps.set_version.outputs.mod_version }}" "${{ steps.set_description.outputs.mod_description }}"
+        unex changelog "v${{ steps.set_version.outputs.mod_version }}" "${{ steps.set_description.outputs.mod_changelog }}"
       env:
         UNEX_GAME: ${{ inputs.nexusmods_game_id }}
         UNEX_MODID: ${{ inputs.nexusmods_mod_id }}
