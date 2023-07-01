@@ -14,13 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - name: Setup .NET 3
+    - name: Setup .NET 6
       uses: actions/setup-dotnet@master
       with:
-        dotnet-version: 3.1.x
+        dotnet-version: 6.x.x
 
-    - name: Install NexusUploader
-      run: dotnet tool install -g NexusUploader
+    - name: Install BUTR.NexusUploader
+      run: dotnet tool install -g BUTR.NexusUploader
       shell: pwsh
 
     - name: Check NexusUploader credentials
