@@ -1,0 +1,31 @@
+name: Verify UNEX Credentials for NexusMods
+
+on:
+  workflow_call:
+    secrets:
+      NEXUSMODS_API_KEY:
+        required: true
+      NEXUSMODS_COOKIES:
+        required: true
+
+jobs:
+  verify-unex-credentials-nexusmods:
+    name: Verify Credentials for NexusMods
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Setup .NET 3
+      uses: actions/setup-dotnet@master
+      with:
+        dotnet-version: 3.1.x
+
+    - name: Install NexusUploader
+      run: dotnet tool install -g NexusUploader
+      shell: pwsh
+
+    - name: Check NexusUploader credentials
+      run: unex check;
+      env:
+        UNEX_APIKEY: ${{ secrets.NEXUSMODS_API_KEY }}
+        UNEX_COOKIES: ${{ secrets.NEXUSMODS_COOKIES }}
+      shell: pwsh
