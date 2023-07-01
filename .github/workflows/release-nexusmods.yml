@@ -43,12 +43,7 @@ jobs:
       uses: butr/actions-common-setup@v2.1
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-    
-    - name: Setup .NET 3.1
-      uses: actions/setup-dotnet@master
-      with:
-        dotnet-version: 3.1.x
-    
+
     - name: Download Module artifact
       uses: actions/download-artifact@v3
       with:
@@ -102,8 +97,8 @@ jobs:
           echo "::set-output name=mod_changelog::$c_desc"          
         fi
 
-    - name: Install NexusUploader
-      run: dotnet tool install -g NexusUploader;
+    - name: Install BUTR.NexusUploader
+      run: dotnet tool install -g BUTR.NexusUploader;
       shell: pwsh
 
     - run: |
