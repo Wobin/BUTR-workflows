@@ -24,7 +24,7 @@ jobs:
       shell: pwsh
 
     - name: Check NexusUploader credentials
-      run: unex check;
+      run: unex check
       env:
         UNEX_APIKEY: ${{ secrets.NEXUSMODS_API_KEY }}
         UNEX_COOKIES: ${{ secrets.NEXUSMODS_COOKIES }}
