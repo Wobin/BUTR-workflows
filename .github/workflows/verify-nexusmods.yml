@@ -3,7 +3,7 @@ name: Verify Credentials for NexusMods
 on:
   workflow_call:
     secrets:
-      NEXUSMODS_APIKEY:
+      NEXUSMODS_API_KEY:
         required: true
       NEXUSMODS_COOKIE_NEXUSID:
         required: true
@@ -28,7 +28,7 @@ jobs:
     - name: Check Digitalroot.ModUploader credentials
       run: drmu nexusmods check;
       env:
-        NEXUSMOD_API_KEY: ${{ secrets.NEXUSMOD_API_KEY }}
+        NEXUSMOD_API_KEY: ${{ secrets.NEXUSMODS_API_KEY }}
         NEXUSMOD_COOKIE_NEXUSID: ${{ secrets.NEXUSMOD_COOKIE_NEXUSID }}
         NEXUSMOD_COOKIE_SID_DEVELOP: ${{ secrets.NEXUSMOD_COOKIE_SID_DEVELOP }}
       shell: pwsh
