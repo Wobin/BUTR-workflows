@@ -48,6 +48,8 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: ${{ inputs.artifact_name }}
+        pattern: ${{ inputs.artifact_name }}-*
+        merge-multiple: true
         path: ./artifact
 
     - name: 7z Module
