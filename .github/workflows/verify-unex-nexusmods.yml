@@ -5,7 +5,7 @@ on:
     secrets:
       NEXUSMODS_API_KEY:
         required: true
-      NEXUSMOD_SESSION_COOKIE:
+      NEXUSMODS_COOKIES:
         required: true
 
 jobs:
@@ -27,5 +27,5 @@ jobs:
       run: unex check
       env:
         UNEX_APIKEY: ${{ secrets.NEXUSMODS_API_KEY }}
-        UNEX_COOKIES: ${{ secrets.NEXUSMOD_SESSION_COOKIE }}
+        UNEX_COOKIES: ${{ secrets.NEXUSMODS_COOKIES }}
       shell: pwsh
