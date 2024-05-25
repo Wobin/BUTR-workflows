@@ -8,8 +8,7 @@ on:
         type: string
       nexusmods_mod_id:
         required: true
-        type: number
-        default: -1
+        type: string
       mod_filename:
         required: true
         type: string
@@ -27,7 +26,7 @@ on:
     secrets:
       NEXUSMODS_APIKEY:
         required: true
-      NEXUSMODS_COOKIES:
+      NEXUSMODS_SESSION_COOKIE:
         required: true
 
 jobs:
@@ -110,16 +109,15 @@ jobs:
       run: dotnet tool install -g BUTR.NexusUploader;
       shell: pwsh
 
-    - run: |
-        unex upload ${{ inputs.nexusmods_mod_id }} "${{ inputs.mod_filename }}.7z" -v "v${{ steps.set_version.outputs.mod_version }}" ;
-        unex changelog "v${{ steps.set_version.outputs.mod_version }}" "${{ steps.set_description.outputs.mod_changelog }}"
+    - name: Run BUTR.NexusUploader
+      run: |
+        unex upload ${{ inputs.nexusmods_mod_id }} "${{ inputs.mod_filename }}.7z" -v "v${{ steps.set_version.outputs.mod_version }}" -f "${{ inputs.mod_filename }}";
+        unex changelog "v${{ steps.set_version.outputs.mod_version }}" "${{ steps.set_description.outputs.mod_changelog }}" -m "${{ inputs.nexusmods_mod_id }}";
+      shell: pwsh
       env:
         UNEX_GAME: ${{ inputs.nexusmods_game_id }}
-        UNEX_MODID: ${{ inputs.nexusmods_mod_id }}
-        UNEX_FILENAME: ${{ inputs.mod_filename }}
         UNEX_FILEDESCRIPTION: ${{ steps.set_description.outputs.mod_description }}
         UNEX_PREVIOUSFILE: auto
         UNEX_APIKEY: ${{ secrets.NEXUSMODS_APIKEY }}
-        UNEX_COOKIES: ${{ secrets.NEXUSMODS_COOKIES }}
+        UNEX_SESSION_COOKIE: ${{ secrets.NEXUSMODS_SESSION_COOKIE }}
         UNEX_DEBUG: true
-      shell: pwsh
