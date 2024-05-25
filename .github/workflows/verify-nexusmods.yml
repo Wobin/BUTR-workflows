@@ -5,7 +5,7 @@ on:
     secrets:
       NEXUSMODS_API_KEY:
         required: true
-      NEXUSMODS_COOKIES:
+      NEXUSMODS_SESSION_COOKIE:
         required: true
 
 jobs:
@@ -27,5 +27,5 @@ jobs:
       run: drmu nexusmods check;
       env:
         NEXUSMOD_API_KEY: ${{ secrets.NEXUSMODS_API_KEY }}
-        NEXUSMOD_SESSION_COOKIE: ${{ secrets.NEXUSMODS_COOKIES }}
+        NEXUSMOD_SESSION_COOKIE: ${{ secrets.NEXUSMODS_SESSION_COOKIE }}
       shell: pwsh
