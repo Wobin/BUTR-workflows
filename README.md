@@ -5,5 +5,4 @@ You need to either switch to Steam Desktop Authenticator or extract the Shared K
 If Steam Guard is not used, `STEAM_LOGIN` and `STEAM_PASSWORD` will be enough.
 
 ## NexusMods Workflow
-Use Firefox and login to NexusMods. F12 and go to Network tab. Find any XHR method to nexusmods.com and copy the Cookies header. This is our `NEXUSMODS_COOKIES` secret.  
-Do not use other browser, their headers do not work with the workflow!
+Use any broswe and login to NexusMods. F12 and go to Application tab. Find the Cookie tab in the Storage section. Copy the value of the `nexusmods_session` cookie. This is our `NEXUSMODS_SESSION_COOKIE` secret.  
