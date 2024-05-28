@@ -23,6 +23,10 @@ on:
       artifact_name:
         required: true
         type: string
+      append_v_to_version:
+        required: true
+        type: boolean
+        default: true
     secrets:
       NEXUSMODS_APIKEY:
         required: true
@@ -111,8 +115,8 @@ jobs:
 
     - name: Run BUTR.NexusUploader
       run: |
-        unex upload ${{ inputs.nexusmods_mod_id }} "${{ inputs.mod_filename }}.7z" -v "v${{ steps.set_version.outputs.mod_version }}" -f "${{ inputs.mod_filename }}";
-        unex changelog "v${{ steps.set_version.outputs.mod_version }}" -c "${{ steps.set_description.outputs.mod_changelog }}" -m "${{ inputs.nexusmods_mod_id }}";
+        unex upload ${{ inputs.nexusmods_mod_id }} "${{ inputs.mod_filename }}.7z" -v "${{ inputs.append_v_to_version && 'v' || '' }}${{ steps.set_version.outputs.mod_version }}" -f "${{ inputs.mod_filename }}";
+        unex changelog "${{ inputs.append_v_to_version && 'v' || '' }}${{ steps.set_version.outputs.mod_version }}" -c "${{ steps.set_description.outputs.mod_changelog }}" -m "${{ inputs.nexusmods_mod_id }}";
       shell: pwsh
       env:
         UNEX_GAME: ${{ inputs.nexusmods_game_id }}
