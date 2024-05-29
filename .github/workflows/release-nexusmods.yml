@@ -20,13 +20,13 @@ on:
         required: false
         type: string
         default: ''
+      artifact_name:
+        required: true
+        type: string
       mod_description_full:
         required: false
         type: boolean
         default: true
-      artifact_name:
-        required: true
-        type: string
       append_v_to_version:
         required: true
         type: boolean
