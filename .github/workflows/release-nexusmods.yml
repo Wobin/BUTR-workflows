@@ -20,6 +20,10 @@ on:
         required: false
         type: string
         default: ''
+      mod_description_full:
+        required: false
+        type: boolean
+        default: true
       artifact_name:
         required: true
         type: string
@@ -88,7 +92,7 @@ jobs:
       run: |
         if ${{ inputs.mod_description == '' }}
         then
-          desc="$(bannerlord_changelog_parser fulldescription -f "$PWD/changelog.txt")"
+          desc="$(bannerlord_changelog_parser ${{ inputs.mod_description_full && 'fulldescription' || 'description }}' -f "$PWD/changelog.txt")"
           desc="${desc//'%'/'%25'}"
           desc="${desc//$'"'/'%22'}"
           desc="${desc//$'\n'/'%0A'}"
