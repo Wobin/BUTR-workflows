@@ -67,7 +67,7 @@ jobs:
       continue-on-error: true
 
     - name: 7z Module
-      run: 7z a -t7z "${{ inputs.mod_filename }}.7z" ./artifact/* -mx9
+      run: 7z a -tzip "${{ inputs.mod_filename }}.zip" ./artifact/* -mx9
       #shell: pwsh
       # pwsh casues it to include the root folder
 
