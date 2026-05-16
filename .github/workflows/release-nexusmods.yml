@@ -73,7 +73,7 @@ jobs:
 
     - name: Install Bannerlord.ChangelogParser
       if: ${{ inputs.mod_description == '' }}
-      run: dotnet tool install -g Bannerlord.ChangelogParser;
+      run: dotnet tool install -g Bannerlord.ChangelogParser
       shell: pwsh
 
     - name: Set Version
@@ -98,24 +98,24 @@ jobs:
           desc="${desc//$'"'/'%22'}"
           desc="${desc//$'\n'/'%0A'}"
           desc="${desc//$'\r'/'%0D'}"
-          echo "::set-output name=mod_description::$desc"
+          echo "mod_description=$desc" >> "$GITHUB_OUTPUT"
           c_desc="${desc#'For'*'%0A* '}"
           c_desc="${c_desc//'%0A* '/'%0A'}"
-          echo "::set-output name=mod_changelog::$c_desc"
+          echo "mod_changelog=$c_desc" >> "$GITHUB_OUTPUT"
         else
           desc="${{ inputs.mod_description }}"
           desc="${desc//'%'/'%25'}"
           desc="${desc//$'"'/'%22'}"
           desc="${desc//$'\n'/'%0A'}"
           desc="${desc//$'\r'/'%0D'}"
-          echo "::set-output name=mod_description::$desc"
+          echo "mod_description=$desc" >> "$GITHUB_OUTPUT"
           c_desc="${desc#'For'*'%0A* '}"
           c_desc="${c_desc//'%0A* '/'%0A'}"
-          echo "::set-output name=mod_changelog::$c_desc"          
+          echo "mod_changelog=$c_desc" >> "$GITHUB_OUTPUT"
         fi
 
     - name: Install BUTR.NexusUploader
-      run: dotnet tool install -g BUTR.NexusUploader;
+      run: dotnet tool install -g BUTR.NexusUploader
       shell: pwsh
 
     - name: Run BUTR.NexusUploader
